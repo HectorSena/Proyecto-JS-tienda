@@ -77,13 +77,11 @@ function actualizarBotonesEliminar() {
 }
 
 
-/* area sweet alert */
-
+/* area sweet alert
 function vaciarsweet() {
     swal("Su carrito se vacio correctamente!"," ", "success")
 }
-
-/* area sweet alert */
+ area sweet alert */
 function eliminarDelCarrito(e) {
 
     Toastify({
@@ -128,7 +126,15 @@ function vaciarCarrito() {
         confirmButtonText: 'Si',
         calcelButtonText: 'No',
     }).then((result) => {
-        if (result.isConfirmed) {
+        if (result.isConfirmed)
+        {
+
+            Swal.fire({
+                title: 'Su Carrito se elimino correctamente!',
+                icon: 'success',
+                
+            })
+
             productosEnCarrito.length = 0;
             localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
             cargarProductosCarrito();
