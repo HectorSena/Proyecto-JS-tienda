@@ -68,6 +68,7 @@ cargarProductosCarrito();
 
 
 function actualizarBotonesEliminar() {
+    
     botonesEliminar = document.querySelectorAll(".carrito-producto-eliminar");
 
     botonesEliminar.forEach(boton => {
@@ -82,9 +83,31 @@ function vaciarsweet() {
     swal("Su carrito se vacio correctamente!"," ", "success")
 }
 
-
 /* area sweet alert */
 function eliminarDelCarrito(e) {
+
+    Toastify({
+        text: "Producto Eliminado !",
+        duration: 3000,
+        close: false,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+            color: "#000000",
+            background: "linear-gradient(to right, #715327, #c6c6c6ac)",
+            borderRadius: "1rem",
+            textTransform: "uppercase",
+            fontSize: "0.75rem",
+        },
+        offset: {
+            x: "0.75rem", // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+            y: "0.75rem" // vertical axis - can be a number or a string indicating unity. eg: '2em'
+        },
+        onClick: function () { } // Callback after click
+    }).showToast();
+
+
     const idBoton = e.currentTarget.id;
     const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
     productosEnCarrito.splice(index, 1);
@@ -95,9 +118,25 @@ function eliminarDelCarrito(e) {
 
 botonVaciar.addEventListener("click", vaciarCarrito);
 function vaciarCarrito() {
-    productosEnCarrito.length = 0;
-    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
-    cargarProductosCarrito();
+
+    Swal.fire({
+        title: 'Estas seguro?',
+        icon: 'question',
+        html: `Se eliminaran ${productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0)} productos!`,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText: 'Si',
+        calcelButtonText: 'No',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            productosEnCarrito.length = 0;
+            localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+            cargarProductosCarrito();
+        }
+    });
+
+
+    
 }
 
 function actualizarTotal() {
